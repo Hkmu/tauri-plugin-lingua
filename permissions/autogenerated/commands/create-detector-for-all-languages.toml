@@ -1,0 +1,13 @@
+# Automatically generated - DO NOT EDIT!
+
+"$schema" = "../../schemas/schema.json"
+
+[[permission]]
+identifier = "allow-create-detector-for-all-languages"
+description = "Enables the create_detector_for_all_languages command without any pre-configured scope."
+commands.allow = ["create_detector_for_all_languages"]
+
+[[permission]]
+identifier = "deny-create-detector-for-all-languages"
+description = "Denies the create_detector_for_all_languages command without any pre-configured scope."
+commands.deny = ["create_detector_for_all_languages"]

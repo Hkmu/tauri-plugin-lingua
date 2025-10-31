@@ -1,0 +1,13 @@
+# Automatically generated - DO NOT EDIT!
+
+"$schema" = "../../schemas/schema.json"
+
+[[permission]]
+identifier = "allow-compute-language-confidence"
+description = "Enables the compute_language_confidence command without any pre-configured scope."
+commands.allow = ["compute_language_confidence"]
+
+[[permission]]
+identifier = "deny-compute-language-confidence"
+description = "Denies the compute_language_confidence command without any pre-configured scope."
+commands.deny = ["compute_language_confidence"]

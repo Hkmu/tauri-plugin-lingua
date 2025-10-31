@@ -1,0 +1,20 @@
+[package]
+name = "tauri-plugin-lingua"
+version = "0.1.0"
+authors = [ "You" ]
+description = ""
+edition = "2021"
+rust-version = "1.77.2"
+exclude = ["/examples", "/dist-js", "/guest-js", "/node_modules"]
+links = "tauri-plugin-lingua"
+
+[dependencies]
+tauri = { version = "2.9.2" }
+serde = "1.0"
+serde_json = "1.0"
+thiserror = "2"
+lingua = "1.7"
+parking_lot = "0.12"
+
+[build-dependencies]
+tauri-plugin = { version = "2.5.1", features = ["build"] }

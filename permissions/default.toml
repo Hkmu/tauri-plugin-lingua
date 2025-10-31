@@ -1,0 +1,10 @@
+[default]
+description = "Default permissions for the plugin"
+permissions = [
+  "allow-ping",
+  "allow-create-detector-for-all-languages",
+  "allow-create-detector-for-languages",
+  "allow-detect-language",
+  "allow-compute-language-confidence",
+  "allow-compute-language-confidence-values",
+]
