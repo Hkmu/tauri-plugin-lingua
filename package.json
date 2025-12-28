@@ -1,8 +1,8 @@
 {
   "name": "tauri-plugin-lingua-api",
   "version": "0.1.0",
-  "author": "You",
-  "description": "",
+  "author": "hej",
+  "description": "JavaScript API for tauri-plugin-lingua - language detection for Tauri apps",
   "type": "module",
   "types": "./dist-js/index.d.ts",
   "main": "./dist-js/index.cjs",
@@ -14,8 +14,16 @@
   },
   "files": [
     "dist-js",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Hkmu/tauri-plugin-lingua.git"
+  },
+  "homepage": "https://github.com/Hkmu/tauri-plugin-lingua#readme",
+  "keywords": ["tauri", "plugin", "language", "detection", "lingua"],
+  "license": "Apache-2.0",
   "packageManager": "pnpm@10.14.0",
   "scripts": {
     "preinstall": "npx only-allow pnpm",

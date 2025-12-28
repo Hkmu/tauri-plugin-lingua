@@ -1,12 +1,20 @@
 [package]
 name = "tauri-plugin-lingua"
 version = "0.1.0"
-authors = [ "You" ]
-description = ""
+authors = [ "hej" ]
+description = "A Tauri plugin for language detection using lingua-rs"
+documentation = "https://docs.rs/tauri-plugin-lingua"
+homepage = "https://github.com/Hkmu/tauri-plugin-lingua"
+repository = "https://github.com/Hkmu/tauri-plugin-lingua"
+license = "Apache-2.0"
+keywords = ["tauri", "plugin", "language", "detection", "lingua"]
 edition = "2021"
 rust-version = "1.77.2"
 exclude = ["/examples", "/dist-js", "/guest-js", "/node_modules"]
 links = "tauri-plugin-lingua"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 tauri = { version = "2.9.2" }
