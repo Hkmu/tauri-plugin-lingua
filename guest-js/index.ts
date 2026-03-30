@@ -9,6 +9,16 @@ export interface LanguageConfidence {
   confidence: number;
 }
 
+export interface CreateDetectorOptions {
+  /** Minimum relative distance between confidence values.
+   *  Default: -1 (disabled)
+   *  Range: -1 or 0.0-0.99
+   *  When set to a value between 0.0-0.99, language detection returns null if
+   *  the difference between the top two language confidences is smaller than
+   *  this value. Set to -1 to disable this filtering. */
+  minimumRelativeDistance?: number;
+}
+
 export async function ping(value: string): Promise<string | null> {
   return await invoke<{value?: string}>('plugin:lingua|ping', {
     payload: {
@@ -17,13 +27,16 @@ export async function ping(value: string): Promise<string | null> {
   }).then((r) => (r.value ? r.value : null));
 }
 
-export async function createDetectorForAllLanguages(): Promise<LanguageDetector> {
-  return await invoke<LanguageDetector>('plugin:lingua|create_detector_for_all_languages');
+export async function createDetectorForAllLanguages(options?: CreateDetectorOptions): Promise<LanguageDetector> {
+  return await invoke<LanguageDetector>('plugin:lingua|create_detector_for_all_languages', {
+    options: options ?? {},
+  });
 }
 
-export async function createDetectorForLanguages(languages: string): Promise<LanguageDetector> {
+export async function createDetectorForLanguages(languages: string, options?: CreateDetectorOptions): Promise<LanguageDetector> {
   return await invoke<LanguageDetector>('plugin:lingua|create_detector_for_languages', {
     languages,
+    options: options ?? {},
   });
 }
 

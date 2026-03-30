@@ -18,6 +18,12 @@ pub struct LanguageDetector {
   pub id: String,
 }
 
+#[derive(Debug, Clone, Default, Deserialize)]
+#[serde(rename_all = "camelCase", default)]
+pub struct CreateDetectorOptions {
+  pub minimum_relative_distance: Option<f64>,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LanguageConfidence {

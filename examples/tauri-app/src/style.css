@@ -19,8 +19,6 @@
   padding-top: 10vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  text-align: center;
 }
 
 .logo {
@@ -36,7 +34,6 @@
 
 .row {
   display: flex;
-  justify-content: center;
 }
 
 a {

@@ -33,21 +33,29 @@ impl<R: Runtime> Lingua<R> {
     })
   }
 
-  pub fn create_detector_for_all_languages(&self) -> crate::Result<LanguageDetector> {
-    let detector = LanguageDetectorBuilder::from_all_languages().build();
+  pub fn create_detector_for_all_languages(&self, options: CreateDetectorOptions) -> crate::Result<LanguageDetector> {
+    let mut builder = LanguageDetectorBuilder::from_all_languages();
+
+    if let Some(distance) = options.minimum_relative_distance {
+      if distance >= 0.0 && distance < 1.0 {
+        builder.with_minimum_relative_distance(distance);
+      }
+    }
+
+    let detector = builder.build();
     let mut next_id = self.next_id.write();
     let id = next_id.to_string();
     *next_id += 1;
-    
+
     self.detectors.write().insert(id.clone(), detector);
-    
+
     Ok(LanguageDetector { id })
   }
 
-  pub fn create_detector_for_languages(&self, languages: String) -> crate::Result<LanguageDetector> {
+  pub fn create_detector_for_languages(&self, languages: String, options: CreateDetectorOptions) -> crate::Result<LanguageDetector> {
     let language_codes: Vec<&str> = languages.split(',').collect();
     let mut selected_languages = Vec::new();
-    
+
     for code in language_codes {
       let code = code.trim().to_uppercase();
       if let Some(language) = parse_language_code(&code) {
@@ -56,18 +64,26 @@ impl<R: Runtime> Lingua<R> {
         return Err(crate::Error::InvalidLanguageCode(code));
       }
     }
-    
+
     if selected_languages.is_empty() {
       return Err(crate::Error::NoLanguagesProvided);
     }
-    
-    let detector = LanguageDetectorBuilder::from_languages(&selected_languages).build();
+
+    let mut builder = LanguageDetectorBuilder::from_languages(&selected_languages);
+
+    if let Some(distance) = options.minimum_relative_distance {
+      if distance >= 0.0 && distance < 1.0 {
+        builder.with_minimum_relative_distance(distance);
+      }
+    }
+
+    let detector = builder.build();
     let mut next_id = self.next_id.write();
     let id = next_id.to_string();
     *next_id += 1;
-    
+
     self.detectors.write().insert(id.clone(), detector);
-    
+
     Ok(LanguageDetector { id })
   }
 

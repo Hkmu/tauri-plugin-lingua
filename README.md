@@ -56,6 +56,7 @@ import {
   computeLanguageConfidenceValues,
   type LanguageDetector,
   type LanguageConfidence,
+  type CreateDetectorOptions,
 } from 'tauri-plugin-lingua-api';
 
 // Create a detector for all 75 supported languages
@@ -63,6 +64,13 @@ const detector = await createDetectorForAllLanguages();
 
 // Or create a detector for specific languages (comma-separated ISO 639-1 codes)
 const customDetector = await createDetectorForLanguages('en,fr,de,es,zh');
+
+// Create a detector with minimum relative distance option
+// This returns null when the top two language confidences differ by less than 0.1 (10%)
+// Default is -1 (disabled), which always returns the most likely language
+const strictDetector = await createDetectorForAllLanguages({
+  minimumRelativeDistance: 0.1
+});
 
 // Detect the language of a text
 const language = await detectLanguage(detector, "Hello, how are you?");
@@ -73,6 +81,10 @@ const lang = await detectLanguage(detector, "Hi");
 if (lang) {
   console.log(`Detected language: ${lang}`);
 }
+
+// With minimumRelativeDistance set, ambiguous text returns null
+const ambiguous = await detectLanguage(strictDetector, "Hi");
+console.log(ambiguous); // null (if confidence difference is less than threshold)
 
 // Get confidence score for a specific language
 const confidence = await computeLanguageConfidence(
@@ -115,20 +127,51 @@ interface LanguageConfidence {
 }
 ```
 
+#### `CreateDetectorOptions`
+
+```typescript
+interface CreateDetectorOptions {
+  /** Minimum relative distance between confidence values.
+   *  Default: -1 (disabled)
+   *  Range: -1 or 0.0-0.99
+   *  When set to a value between 0.0-0.99, language detection returns null if
+   *  the difference between the top two language confidences is smaller than
+   *  this value. Set to -1 to always return the most likely language. */
+  minimumRelativeDistance?: number;
+}
+```
+
 ### Functions
 
-#### `createDetectorForAllLanguages()`
+#### `createDetectorForAllLanguages(options?)`
 
 Creates a language detector for all 75 supported languages.
 
+**Parameters:**
+- `options` (optional): `CreateDetectorOptions` object
+  - `minimumRelativeDistance`: Number between -1 and 0.99. Default is -1 (disabled). When set to 0.0-0.99, `detectLanguage` returns `null` if the difference between the top two language confidences is smaller than this value. Useful for filtering out ambiguous results.
+
 **Returns:** `Promise<LanguageDetector>`
 
-#### `createDetectorForLanguages(languages: string)`
+**Example:**
+```typescript
+// Standard detector (minimumRelativeDistance: -1, feature disabled)
+const detector = await createDetectorForAllLanguages();
+
+// Detector with minimum relative distance enabled
+const strictDetector = await createDetectorForAllLanguages({
+  minimumRelativeDistance: 0.1  // 10% minimum difference required
+});
+```
+
+#### `createDetectorForLanguages(languages: string, options?)`
 
 Creates a language detector for specific languages.
 
 **Parameters:**
 - `languages`: Comma-separated ISO 639-1 language codes (e.g., `"en,fr,de"`)
+- `options` (optional): `CreateDetectorOptions` object
+  - `minimumRelativeDistance`: Number between -1 and 0.99. Default is -1 (disabled).
 
 **Returns:** `Promise<LanguageDetector>`
 

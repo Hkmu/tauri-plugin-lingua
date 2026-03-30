@@ -15,16 +15,18 @@ pub(crate) async fn ping<R: Runtime>(
 #[command]
 pub(crate) async fn create_detector_for_all_languages<R: Runtime>(
     app: AppHandle<R>,
+    options: Option<CreateDetectorOptions>,
 ) -> Result<LanguageDetector> {
-    app.lingua().create_detector_for_all_languages()
+    app.lingua().create_detector_for_all_languages(options.unwrap_or_default())
 }
 
 #[command]
 pub(crate) async fn create_detector_for_languages<R: Runtime>(
     app: AppHandle<R>,
     languages: String,
+    options: Option<CreateDetectorOptions>,
 ) -> Result<LanguageDetector> {
-    app.lingua().create_detector_for_languages(languages)
+    app.lingua().create_detector_for_languages(languages, options.unwrap_or_default())
 }
 
 #[command]

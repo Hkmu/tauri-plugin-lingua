@@ -11,6 +11,8 @@
   let textInput = $state('Hello, how are you?')
   let selectedLanguages = $state('en,fr,de,es,zh')
   let useAllLanguages = $state(true)
+  let useMinDistance = $state(false)
+  let minDistance = $state(-1)
   let detector = $state(null)
   let detectedLanguage = $state('')
   let confidenceLanguage = $state('en')
@@ -32,10 +34,11 @@
   async function createDetector() {
     error = ''
     try {
+      const options = useMinDistance && minDistance >= 0 ? { minimumRelativeDistance: minDistance } : { minimumRelativeDistance: -1 }
       if (useAllLanguages) {
-        detector = await createDetectorForAllLanguages()
+        detector = await createDetectorForAllLanguages(options)
       } else {
-        detector = await createDetectorForLanguages(selectedLanguages)
+        detector = await createDetectorForLanguages(selectedLanguages, options)
       }
       detectedLanguage = ''
       confidenceScore = null
@@ -123,6 +126,30 @@
       />
       <p class="help">Enter comma-separated ISO 639-1 codes (e.g., en,fr,de,es,zh)</p>
     {/if}
+
+    <div class="row">
+      <label>
+        <input type="checkbox" bind:checked={useMinDistance} />
+        Use Minimum Relative Distance
+      </label>
+    </div>
+    {#if useMinDistance}
+      <div class="row">
+        <input
+          type="range"
+          bind:value={minDistance}
+          min="0"
+          max="0.99"
+          step="0.01"
+          class="distance-slider"
+        />
+        <span class="distance-value">{(minDistance * 100).toFixed(0)}%</span>
+      </div>
+      <p class="help">Detection returns null when top two language confidences differ by less than this value (0.0-0.99)</p>
+    {:else}
+      <p class="help">Minimum relative distance is disabled (-1). All text will return a language result.</p>
+    {/if}
+
     <LoadingButton onclick={createDetector} loading>
       {detector ? '✓ Recreate Detector' : 'Create Detector'}
     </LoadingButton>
@@ -421,5 +448,42 @@
     border-radius: 4px;
     color: #4ade80;
     font-weight: 500;
+  }
+
+  .distance-slider {
+    flex: 1;
+    height: 8px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #333;
+    border-radius: 4px;
+    outline: none;
+  }
+
+  .distance-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #61dafb;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .distance-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #61dafb;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+  }
+
+  .distance-value {
+    font-family: monospace;
+    font-weight: bold;
+    color: #61dafb;
+    min-width: 50px;
+    text-align: right;
   }
 </style>
