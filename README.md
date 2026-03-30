@@ -19,7 +19,7 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-tauri-plugin-lingua = "0.1.0"
+tauri-plugin-lingua = "0.2.0"
 ```
 
 ### JavaScript

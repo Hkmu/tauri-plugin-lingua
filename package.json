@@ -1,6 +1,6 @@
 {
   "name": "tauri-plugin-lingua-api",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "hej",
   "description": "JavaScript API for tauri-plugin-lingua - language detection for Tauri apps",
   "type": "module",

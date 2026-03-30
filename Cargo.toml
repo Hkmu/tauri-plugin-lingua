@@ -1,6 +1,6 @@
 [package]
 name = "tauri-plugin-lingua"
-version = "0.1.0"
+version = "0.2.0"
 authors = [ "hej" ]
 description = "A Tauri plugin for language detection using lingua-rs"
 documentation = "https://docs.rs/tauri-plugin-lingua"
